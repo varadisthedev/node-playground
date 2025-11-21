@@ -2,9 +2,20 @@ const express = require("express");
 const PORT = 8000;
 const fs = require("fs");
 const app = express();
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 //middlewares
-app.use(express.json());// for ECONNRESET
+app.use(express.json());// for ECONNRESET since express cant parse json directly 
+
+
+mongoose.connect(process.env.DATABASE_URL)
+.then(()=>{console.log("mongodb connected with link:",process.env.DATABASE_URL)})
+.catch((err)=>console.error("we caught an error"));
+
+
 
 app.post("/",(req,res)=>{
     let reqData=req.body;
@@ -30,4 +41,7 @@ app.get("/",(req,res)=>{
 
 app.listen(PORT,()=>{
     console.log(`server started at port http://localhost:${PORT}/`);
-})
+});
+console.log(
+    "executed 3rd"
+);
